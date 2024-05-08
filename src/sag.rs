@@ -79,7 +79,7 @@ impl Sign<Scalar, Vec<RistrettoPoint>> for SAG {
 
 impl Verify for SAG {
     /// To verify a `signature` you need the `message` too
-    fn verify<Hash: Digest<OutputSize=U64> + Clone>(signature: SAG, message: &Vec<u8>) -> bool {
+    fn verify<Hash: Digest<OutputSize=U64> + Clone>(signature: &SAG, message: &Vec<u8>) -> bool {
         let n = signature.ring.len();
         let mut reconstructed_c: Scalar = signature.challenge;
         let mut group_and_message_hash = Hash::new();
@@ -134,19 +134,19 @@ mod test {
 
         {
             let signature = SAG::sign::<Sha512, OsRng>(k, ring.clone(), secret_index, &message);
-            let result = SAG::verify::<Sha512>(signature, &message);
+            let result = SAG::verify::<Sha512>(&signature, &message);
             assert!(result);
         }
 
         {
             let signature = SAG::sign::<Keccak512, OsRng>(k, ring.clone(), secret_index, &message);
-            let result = SAG::verify::<Keccak512>(signature, &message);
+            let result = SAG::verify::<Keccak512>(&signature, &message);
             assert!(result);
         }
 
         {
             let signature = SAG::sign::<Blake2b512, OsRng>(k, ring.clone(), secret_index, &message);
-            let result = SAG::verify::<Blake2b512>(signature, &message);
+            let result = SAG::verify::<Blake2b512>(&signature, &message);
             assert!(result);
         }
     }

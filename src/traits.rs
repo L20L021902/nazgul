@@ -17,7 +17,7 @@ pub trait Sign<PrivateKey, Ring> {
 
 pub trait Verify {
     fn verify<Hash: Digest<OutputSize = U64> + Clone + Default>(
-        signature: Self,
+        signature: &Self,
         message: &Vec<u8>,
     ) -> bool;
 }

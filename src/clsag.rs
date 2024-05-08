@@ -219,7 +219,7 @@ impl Sign<Vec<Scalar>, Vec<Vec<RistrettoPoint>>> for CLSAG {
 impl Verify for CLSAG {
     /// To verify a `signature` you need the `message` too
     fn verify<Hash: Digest<OutputSize = U64> + Clone + Default>(
-        signature: CLSAG,
+        signature: &CLSAG,
         message: &Vec<u8>,
     ) -> bool {
         let nr = signature.ring.len();
@@ -359,21 +359,21 @@ mod test {
         {
             let signature =
                 CLSAG::sign::<Sha512, OsRng>(ks.clone(), ring.clone(), secret_index, &message);
-            let result = CLSAG::verify::<Sha512>(signature, &message);
+            let result = CLSAG::verify::<Sha512>(&signature, &message);
             assert!(result);
         }
 
         {
             let signature =
                 CLSAG::sign::<Keccak512, OsRng>(ks.clone(), ring.clone(), secret_index, &message);
-            let result = CLSAG::verify::<Keccak512>(signature, &message);
+            let result = CLSAG::verify::<Keccak512>(&signature, &message);
             assert!(result);
         }
 
         {
             let signature =
                 CLSAG::sign::<Blake2b512, OsRng>(ks.clone(), ring.clone(), secret_index, &message);
-            let result = CLSAG::verify::<Blake2b512>(signature, &message);
+            let result = CLSAG::verify::<Blake2b512>(&signature, &message);
             assert!(result);
         }
 

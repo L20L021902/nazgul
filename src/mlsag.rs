@@ -166,7 +166,7 @@ impl Sign<Vec<Scalar>, Vec<Vec<RistrettoPoint>>> for MLSAG {
 impl Verify for MLSAG {
     /// To verify a `signature` you need the `message` too
     fn verify<Hash: Digest<OutputSize = U64> + Clone + Default>(
-        signature: MLSAG,
+        signature: &MLSAG,
         message: &Vec<u8>,
     ) -> bool {
         let mut reconstructed_c: Scalar = signature.challenge;
@@ -273,21 +273,21 @@ mod test {
         {
             let signature =
                 MLSAG::sign::<Sha512, OsRng>(ks.clone(), ring.clone(), secret_index, &message);
-            let result = MLSAG::verify::<Sha512>(signature, &message);
+            let result = MLSAG::verify::<Sha512>(&signature, &message);
             assert!(result);
         }
 
         {
             let signature =
                 MLSAG::sign::<Keccak512, OsRng>(ks.clone(), ring.clone(), secret_index, &message);
-            let result = MLSAG::verify::<Keccak512>(signature, &message);
+            let result = MLSAG::verify::<Keccak512>(&signature, &message);
             assert!(result);
         }
 
         {
             let signature =
                 MLSAG::sign::<Blake2b512, OsRng>(ks.clone(), ring.clone(), secret_index, &message);
-            let result = MLSAG::verify::<Blake2b512>(signature, &message);
+            let result = MLSAG::verify::<Blake2b512>(&signature, &message);
             assert!(result);
         }
 

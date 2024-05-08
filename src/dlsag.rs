@@ -298,7 +298,7 @@ for DLSAG
 impl Verify for DLSAG {
     /// To verify a `signature` you need the `message` too
     fn verify<Hash: Digest<OutputSize=U64> + Clone + Default>(
-        signature: DLSAG,
+        signature: &DLSAG,
         message: &Vec<u8>,
     ) -> bool {
         let mut reconstructed_c: Scalar = signature.challenge;
@@ -422,20 +422,20 @@ mod test {
 
         {
             let signature = DLSAG::sign::<Sha512, OsRng>(k, ring.clone(), secret_index, &message);
-            let result = DLSAG::verify::<Sha512>(signature, &message);
+            let result = DLSAG::verify::<Sha512>(&signature, &message);
             assert!(result);
         }
 
         {
             let signature =
                 DLSAG::sign::<Keccak512, OsRng>(k, ring.clone(), secret_index, &message);
-            let result = DLSAG::verify::<Keccak512>(signature, &message);
+            let result = DLSAG::verify::<Keccak512>(&signature, &message);
             assert!(result);
         }
 
         {
             let signature = DLSAG::sign::<Blake2b512, OsRng>(k, ring.clone(), secret_index, &message);
-            let result = DLSAG::verify::<Blake2b512>(signature, &message);
+            let result = DLSAG::verify::<Blake2b512>(&signature, &message);
             assert!(result);
         }
 
@@ -443,21 +443,21 @@ mod test {
         {
             let signature =
                 DLSAG::sign::<Sha512, OsRng>(other_k, ring.clone(), secret_index, &message);
-            let result = DLSAG::verify::<Sha512>(signature, &message);
+            let result = DLSAG::verify::<Sha512>(&signature, &message);
             assert!(result);
         }
 
         {
             let signature =
                 DLSAG::sign::<Keccak512, OsRng>(other_k, ring.clone(), secret_index, &message);
-            let result = DLSAG::verify::<Keccak512>(signature, &message);
+            let result = DLSAG::verify::<Keccak512>(&signature, &message);
             assert!(result);
         }
 
         {
             let signature =
                 DLSAG::sign::<Blake2b512, OsRng>(other_k, ring.clone(), secret_index, &message);
-            let result = DLSAG::verify::<Blake2b512>(signature, &message);
+            let result = DLSAG::verify::<Blake2b512>(&signature, &message);
             assert!(result);
         }
 

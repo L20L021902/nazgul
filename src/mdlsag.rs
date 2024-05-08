@@ -339,7 +339,7 @@ impl Sign<Vec<(RistrettoPoint, Scalar, Scalar)>, Vec<Vec<(RistrettoPoint, Ristre
 impl Verify for MDLSAG {
     /// To verify a `signature` you need the `message` too
     fn verify<Hash: Digest<OutputSize = U64> + Clone + Default>(
-        signature: MDLSAG,
+        signature: &MDLSAG,
         message: &Vec<u8>,
     ) -> bool {
         let mut reconstructed_c: Scalar = signature.challenge;
@@ -497,21 +497,21 @@ mod test {
         {
             let signature =
                 MDLSAG::sign::<Sha512, OsRng>(ks.clone(), ring.clone(), secret_index, &message);
-            let result = MDLSAG::verify::<Sha512>(signature, &message);
+            let result = MDLSAG::verify::<Sha512>(&signature, &message);
             assert!(result);
         }
 
         {
             let signature =
                 MDLSAG::sign::<Keccak512, OsRng>(ks.clone(), ring.clone(), secret_index, &message);
-            let result = MDLSAG::verify::<Keccak512>(signature, &message);
+            let result = MDLSAG::verify::<Keccak512>(&signature, &message);
             assert!(result);
         }
 
         {
             let signature =
                 MDLSAG::sign::<Blake2b512, OsRng>(ks.clone(), ring.clone(), secret_index, &message);
-            let result = MDLSAG::verify::<Blake2b512>(signature, &message);
+            let result = MDLSAG::verify::<Blake2b512>(&signature, &message);
             assert!(result);
         }
 
@@ -522,7 +522,7 @@ mod test {
                 secret_index,
                 &message,
             );
-            let result = MDLSAG::verify::<Sha512>(signature, &message);
+            let result = MDLSAG::verify::<Sha512>(&signature, &message);
             assert!(result);
         }
 
@@ -533,7 +533,7 @@ mod test {
                 secret_index,
                 &message,
             );
-            let result = MDLSAG::verify::<Keccak512>(signature, &message);
+            let result = MDLSAG::verify::<Keccak512>(&signature, &message);
             assert!(result);
         }
 
@@ -544,7 +544,7 @@ mod test {
                 secret_index,
                 &message,
             );
-            let result = MDLSAG::verify::<Blake2b512>(signature, &message);
+            let result = MDLSAG::verify::<Blake2b512>(&signature, &message);
             assert!(result);
         }
 
